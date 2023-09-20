@@ -22,8 +22,10 @@ def is_goal(state):
     :return: True or False
     :rtype: bool
     """
-
-    raise NotImplementedError
+    for box in state.board.boxes:
+        if box not in state.board.storage:
+            return False
+    return True
 
 
 def get_path(state):
@@ -36,8 +38,13 @@ def get_path(state):
     :return: The path.
     :rtype: List[State]
     """
+    path = []
 
-    raise NotImplementedError
+    while state.parent != None:
+        path = [state] + path
+        state = state.parent
+
+    return path
 
 
 def get_successors(state):
