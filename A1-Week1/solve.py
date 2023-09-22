@@ -42,7 +42,7 @@ def get_path(state):
     path = []
 
     while state.parent != None:
-        path = [state] + path
+        path.insert(state)
         state = state.parent
 
     return path
