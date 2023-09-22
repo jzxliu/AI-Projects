@@ -104,7 +104,7 @@ def get_successors(state):
                 new_state = State(new_board, state.hfn, state.hfn(board) + state.depth + 1, state.depth + 1, state)
                 output.append(new_state)
 
-    return output
+    return []
 
 
 def dfs(init_board):
@@ -168,7 +168,7 @@ def heuristic_basic(board):
                 shortest = dist
         total_distance += shortest
 
-    return 1
+    return total_distance
 
 
 def heuristic_advanced(board):
