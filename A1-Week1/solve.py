@@ -104,7 +104,7 @@ def get_successors(state):
                 new_state = State(new_board, state.hfn, state.hfn(board) + state.depth + 1, state.depth + 1, state)
                 output.append(new_state)
 
-    return []
+    return output
 
 
 def dfs(init_board):
