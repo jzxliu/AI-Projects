@@ -1,7 +1,10 @@
 ############################################################
 ## CSC 384, Intro to AI, University of Toronto.
 ## Assignment 1 Starter Code
-## v1.0
+## v1.1
+##
+## Changes: 
+## v1.1: removed the hfn paramete from dfs. Updated solve_puzzle() accordingly.
 ############################################################
 
 from typing import List
@@ -54,7 +57,7 @@ def get_successors(state):
     raise NotImplementedError
 
 
-def dfs(init_board, hfn):
+def dfs(init_board):
     """
     Run the DFS algorithm given an initial board.
 
@@ -145,7 +148,7 @@ def solve_puzzle(board: Board, algorithm: str, hfn):
         path, step = a_star(board, hfn)
     elif algorithm == 'dfs':
         print("Executing DFS")
-        path, step = dfs(board, hfn)
+        path, step = dfs(board)
     else:
         raise NotImplementedError
 
