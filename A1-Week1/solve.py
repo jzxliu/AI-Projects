@@ -107,7 +107,7 @@ def get_successors(state):
     return output
 
 
-def dfs(init_board, hfn):
+def dfs(init_board):
     """
     Run the DFS algorithm given an initial board.
 
@@ -158,17 +158,7 @@ def heuristic_basic(board):
     :return: The heuristic value.
     :rtype: int
     """
-    total_distance = 0
-
-    for box in board.boxes:
-        shortest = -1
-        for storage in board.storage:
-            dist = abs(storage[0]-box[0]) + abs(storage[1]-box[1])
-            if shortest == -1 or dist < shortest:
-                shortest = dist
-        total_distance += shortest
-
-    return total_distance
+    raise NotImplementedError
 
 
 def heuristic_advanced(board):
