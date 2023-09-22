@@ -158,7 +158,17 @@ def heuristic_basic(board):
     :return: The heuristic value.
     :rtype: int
     """
-    raise NotImplementedError
+    total_distance = 0
+
+    for box in board.boxes:
+        shortest = -1
+        for storage in board.storage:
+            dist = abs(storage[0] - box[0]) + abs(storage[1] - box[1])
+            if shortest == -1 or dist < shortest:
+                shortest = dist
+        total_distance += shortest
+
+    return total_distance
 
 
 def heuristic_advanced(board):
