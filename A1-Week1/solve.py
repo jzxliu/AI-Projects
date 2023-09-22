@@ -83,25 +83,25 @@ def get_successors(state):
     """
 
     output = []
-
-    for robot in state.board.robots:
+    board = state.board
+    for robot in board.robots:
         for direction in {(1, 0), (0, 1), (-1, 0), (0, -1)}:
-            if check_valid_move(state.board, robot, direction):
+            if check_valid_move(board, robot, direction):
                 new_board = Board(board.name, board.width, board.height, [], [], board.storage, board.obstacles)
 
-                for rbt in state.board.robots:
+                for rbt in board.robots:
                     if rbt != robot:
                         new_board.robots.append(rbt)
                     else:
                         new_board.robots.append(add_tuples(rbt, direction))
 
-                for box in state.board.boxes:
+                for box in board.boxes:
                     if box != (add_tuples(robot, direction)):
                         new_board.boxes.append(box)
                     else:
                         new_board.boxes.append(add_tuples(box, direction))
 
-                new_state = State(new_board, state.hfn, state.hfn(board)+state.depth+1, state.depth+1, state)
+                new_state = State(new_board, state.hfn, state.hfn(board) + state.depth + 1, state.depth + 1, state)
                 output += new_state
 
     return output
