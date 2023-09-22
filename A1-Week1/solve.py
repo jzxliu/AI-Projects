@@ -168,7 +168,7 @@ def heuristic_basic(board):
                 shortest = dist
         total_distance += shortest
 
-    return total_distance
+    return 1
 
 
 def heuristic_advanced(board):
