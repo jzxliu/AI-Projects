@@ -40,10 +40,10 @@ def get_path(state):
     :rtype: List[State]
     """
     path = []
-
-    while state.parent != None:
+    curr = state
+    while curr.parent != None:
         path.insert(0, state)
-        state = state.parent
+        curr = curr.parent
 
     return path
 
