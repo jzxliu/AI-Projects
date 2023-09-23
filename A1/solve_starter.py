@@ -25,8 +25,10 @@ def is_goal(state):
     :return: True or False
     :rtype: bool
     """
-
-    raise NotImplementedError
+    for box in state.board.boxes:
+        if box not in state.board.storage:
+            return False
+    return True
 
 
 def get_path(state):
@@ -39,8 +41,35 @@ def get_path(state):
     :return: The path.
     :rtype: List[State]
     """
+    path = []
+    while state != None:
+        path.insert(0, state)
+        state = state.parent
 
-    raise NotImplementedError
+    return path
+
+
+def add_tuples(tuple1, tuple2):
+    """ adds two tuples as if they're vectors."""
+    return tuple([tuple1[0] + tuple2[0], tuple1[1] + tuple2[1]])
+
+
+def check_valid_move(board, robot, direction):
+    """
+    Returns true if robot can move in direction on the board, false otherwise.
+
+    board: Board
+    robot: Tuple
+    direction: Tuple (e.g. (1, 0) or (0, -1))
+    """
+    new_pos = add_tuples(robot, direction)
+    if new_pos in board.obstacles or new_pos in board.robots:
+        return False
+    elif new_pos in board.boxes:
+        new_pos_2 = add_tuples(new_pos, direction)
+        if new_pos_2 in board.obstacles or new_pos_2 in board.robots or new_pos_2 in board.boxes:
+            return False
+    return True
 
 
 def get_successors(state):
@@ -53,8 +82,29 @@ def get_successors(state):
     :return: The list of successor states.
     :rtype: List[State]
     """
+    output = []
+    board = state.board
+    for robot in board.robots:
+        for direction in {(1, 0), (0, 1), (-1, 0), (0, -1)}:
+            if check_valid_move(board, robot, direction):
+                new_board = Board(board.name, board.width, board.height, [], [], board.storage, board.obstacles)
 
-    raise NotImplementedError
+                for rbt in board.robots:
+                    if rbt != robot:
+                        new_board.robots.append(rbt)
+                    else:
+                        new_board.robots.append(add_tuples(rbt, direction))
+
+                for box in board.boxes:
+                    if box != (add_tuples(robot, direction)):
+                        new_board.boxes.append(box)
+                    else:
+                        new_board.boxes.append(add_tuples(box, direction))
+
+                new_state = State(new_board, state.hfn, state.hfn(board) + state.depth + 1, state.depth + 1, state)
+                output.append(new_state)
+
+    return output
 
 
 def dfs(init_board):
@@ -108,8 +158,17 @@ def heuristic_basic(board):
     :return: The heuristic value.
     :rtype: int
     """
+    total_distance = 0
 
-    raise NotImplementedError
+    for box in board.boxes:
+        shortest = -1
+        for storage in board.storage:
+            dist = abs(storage[0] - box[0]) + abs(storage[1] - box[1])
+            if shortest == -1 or dist < shortest:
+                shortest = dist
+        total_distance += shortest
+
+    return total_distance
 
 
 def heuristic_advanced(board):
