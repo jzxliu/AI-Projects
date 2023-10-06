@@ -121,8 +121,19 @@ def dfs(init_board):
     :return: (the path to goal state, solution cost)
     :rtype: List[State], int
     """
+    current_state = State(init_board, heuristic_basic, 0, 0, None)
+    explored = set()
+    frontier = get_successors(current_state)
+    while len(frontier) != 0:
+        if is_goal(current_state):
+            return get_path(current_state), current_state.f
 
-    raise NotImplementedError
+        explored.add(current_state.board)
+
+        for new_state in get_successors(current_state):
+            if new_state.board not in explored:
+                frontier.append(new_state)
+    return [], -1
 
 
 def a_star(init_board, hfn):
