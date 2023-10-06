@@ -230,12 +230,13 @@ def heuristic_advanced(board):
             if shortest == -1 or dist < shortest:
                 shortest = dist
         total_distance += shortest
-        shortest = -1
-        for robot in board.robots:
-            dist = abs(robot[0] - box[0]) + abs(robot[1] - box[1])
-            if shortest == -1 or dist < shortest:
-                shortest = dist
-        total_distance += shortest - 1
+        if shortest != 0:
+            shortest = -1
+            for robot in board.robots:
+                dist = abs(robot[0] - box[0]) + abs(robot[1] - box[1])
+                if shortest == -1 or dist < shortest:
+                    shortest = dist
+            total_distance += shortest - 1
 
     return total_distance
 
