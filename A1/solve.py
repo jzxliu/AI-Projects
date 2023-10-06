@@ -133,12 +133,25 @@ def dfs(init_board):
         for new_state in get_successors(current_state):
             pruning = False
             for explored_board in explored:
-                if set(explored_board.robots) == set(new_state.board.robots) and\
+                if set(explored_board.robots) == set(new_state.board.robots) and \
                         set(explored_board.boxes) == set(new_state.board.boxes):
                     pruning = True
             if not pruning:
                 frontier.append(new_state)
     return [], -1
+
+
+class PriorityQueue:
+    def __init__(self):
+        self._data = []
+        self._index = 0
+
+    def push(self, item, priority):
+        heapq.heappush(self._data, (-priority, self._index, item))
+        self._index += 1
+
+    def pop(self):
+        return heapq.heappop(self._data)[-1]
 
 
 def a_star(init_board, hfn):
@@ -158,7 +171,26 @@ def a_star(init_board, hfn):
     :rtype: List[State], int
     """
 
-    raise NotImplementedError
+    current_state = State(init_board, hfn, 0, 0, None)
+    explored = set()
+    frontier = []
+
+    while len(frontier) != 0:
+        if is_goal(current_state):
+            return get_path(current_state), current_state.f
+
+        explored.add(current_state.board)
+        current_state = heappop(frontier)[-1]
+
+        for new_state in get_successors(current_state):
+            pruning = False
+            for explored_board in explored:
+                if set(explored_board.robots) == set(new_state.board.robots) and \
+                        set(explored_board.boxes) == set(new_state.board.boxes):
+                    pruning = True
+            if not pruning:
+                heappush(frontier, (new_state.f, new_state))
+    return [], -1
 
 
 def heuristic_basic(board):
@@ -196,8 +228,23 @@ def heuristic_advanced(board):
     :return: The heuristic value.
     :rtype: int
     """
+    total_distance = 0
 
-    raise NotImplementedError
+    for box in board.boxes:
+        shortest = -1
+        for storage in board.storage:
+            dist = abs(storage[0] - box[0]) + abs(storage[1] - box[1])
+            if shortest == -1 or dist < shortest:
+                shortest = dist
+        total_distance += shortest
+        shortest = -1
+        for robot in board.robots:
+            dist = abs(robot[0] - box[0]) + abs(robot[1] - box[1])
+            if shortest == -1 or dist < shortest:
+                shortest = dist
+        total_distance += shortest - 1
+
+    return total_distance
 
 
 def solve_puzzle(board: Board, algorithm: str, hfn):
