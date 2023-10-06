@@ -141,19 +141,6 @@ def dfs(init_board):
     return [], -1
 
 
-class PriorityQueue:
-    def __init__(self):
-        self._data = []
-        self._index = 0
-
-    def push(self, item, priority):
-        heapq.heappush(self._data, (-priority, self._index, item))
-        self._index += 1
-
-    def pop(self):
-        return heapq.heappop(self._data)[-1]
-
-
 def a_star(init_board, hfn):
     """
     Run the A_star search algorithm given an initial board and a heuristic function.
@@ -174,6 +161,8 @@ def a_star(init_board, hfn):
     current_state = State(init_board, hfn, 0, 0, None)
     explored = set()
     frontier = []
+    for new_state in get_successors(current_state):
+        heappush(frontier, (new_state.f, new_state))
 
     while len(frontier) != 0:
         if is_goal(current_state):
