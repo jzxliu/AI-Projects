@@ -128,11 +128,13 @@ def dfs(init_board):
             return get_path(current_state), current_state.f
 
         explored.add(current_state.board)
+        current_state = frontier.pop(0)
 
         for new_state in get_successors(current_state):
             pruning = False
             for explored_board in explored:
-                if explored_board.robots == new_state.board.robots and explored_board.boxes == new_state.board.boxes:
+                if set(explored_board.robots) == set(new_state.board.robots) and\
+                        set(explored_board.boxes) == set(new_state.board.boxes):
                     pruning = True
             if not pruning:
                 frontier.append(new_state)
