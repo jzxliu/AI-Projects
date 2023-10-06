@@ -121,6 +121,8 @@ def dfs(init_board):
     :rtype: List[State], int
     """
     current_state = State(init_board, heuristic_basic, 0, 0, None)
+    if is_goal(current_state):
+        return get_path(current_state), current_state.f
     explored = set()
     frontier = get_successors(current_state)
     while len(frontier) != 0:
@@ -159,6 +161,8 @@ def a_star(init_board, hfn):
     """
 
     current_state = State(init_board, hfn, 0, 0, None)
+    if is_goal(current_state):
+        return get_path(current_state), current_state.f
     explored = set()
     frontier = []
     for new_state in get_successors(current_state):
