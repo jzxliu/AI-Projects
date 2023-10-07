@@ -176,12 +176,7 @@ def a_star(init_board, hfn):
         current_state = heappop(frontier)[-1]
 
         for new_state in get_successors(current_state):
-            pruning = False
-            for explored_board in explored:
-                if set(explored_board.robots) == set(new_state.board.robots) and \
-                        set(explored_board.boxes) == set(new_state.board.boxes):
-                    pruning = True
-            if not pruning:
+            if new_state.board not in explored:
                 heappush(frontier, (new_state.f, new_state))
                 explored.add(new_state.board)
     return [], -1
