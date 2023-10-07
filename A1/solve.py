@@ -163,16 +163,16 @@ def a_star(init_board, hfn):
     current_state = State(init_board, hfn, 0, 0, None)
     if is_goal(current_state):
         return get_path(current_state), current_state.f
-    explored = set()
+    explored = {current_state.board}
     frontier = []
     for new_state in get_successors(current_state):
         heappush(frontier, (new_state.f, new_state))
+        explored.add(new_state.board)
 
     while len(frontier) != 0:
         if is_goal(current_state):
             return get_path(current_state), current_state.f
 
-        explored.add(current_state.board)
         current_state = heappop(frontier)[-1]
 
         for new_state in get_successors(current_state):
@@ -183,6 +183,7 @@ def a_star(init_board, hfn):
                     pruning = True
             if not pruning:
                 heappush(frontier, (new_state.f, new_state))
+                explored.add(new_state.board)
     return [], -1
 
 
