@@ -122,12 +122,12 @@ def dfs(init_board):
     """
     current_state = State(init_board, heuristic_basic, 0, 0, None)
     if is_goal(current_state):
-        return get_path(current_state), current_state.f
+        return get_path(current_state), current_state.depth
     explored = set()
     frontier = get_successors(current_state)
     while len(frontier) != 0:
         if is_goal(current_state):
-            return get_path(current_state), current_state.f
+            return get_path(current_state), current_state.depth
 
         explored.add(current_state.board)
         current_state = frontier.pop(0)
@@ -162,7 +162,7 @@ def a_star(init_board, hfn):
 
     current_state = State(init_board, hfn, 0, 0, None)
     if is_goal(current_state):
-        return get_path(current_state), current_state.f
+        return get_path(current_state), current_state.depth
     explored = {current_state.board}
     frontier = []
     for new_state in get_successors(current_state):
@@ -218,8 +218,12 @@ def heuristic_advanced(board):
     :rtype: int
     """
     total_distance = 0
-
+    closest_bot = -1
     for box in board.boxes:
+        if add_tuples(box, (0, 1)) in board.obstacles or add_tuples(box, (0, -1)) in board.obstacles:
+            if add_tuples(box, (1, 0)) in board.obstacles or add_tuples(box, (-1, 0)) in board.obstacles:
+                if box not in board.storage:
+                    return math.inf
         shortest = -1
         for storage in board.storage:
             dist = abs(storage[0] - box[0]) + abs(storage[1] - box[1])
@@ -227,14 +231,14 @@ def heuristic_advanced(board):
                 shortest = dist
         total_distance += shortest
         if shortest != 0:
-            shortest = -1
             for robot in board.robots:
                 dist = abs(robot[0] - box[0]) + abs(robot[1] - box[1])
-                if shortest == -1 or dist < shortest:
-                    shortest = dist
-            total_distance += shortest - 1
+                if closest_bot == -1 or dist < closest_bot:
+                    closest_bot = dist
 
-    return total_distance
+    if total_distance == 0:
+        return 0
+    return total_distance + closest_bot - 1
 
 
 def solve_puzzle(board: Board, algorithm: str, hfn):
