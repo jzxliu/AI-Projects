@@ -7,6 +7,7 @@
 ###############################################################################
 
 import sys
+from mancala_game import *
 
 ###############################################################################
 ### DO NOT MODIFY THE CODE BELOW
@@ -44,8 +45,11 @@ def heuristic_basic(board, player):
     :param player: the current player.
     :return: an estimated utility of the current board for the current player.
     """
-
-    raise NotImplementedError
+    top_score = board.mancalas[TOP]
+    bottom_score = board.mancalas[BOTTOM]
+    if player == BOTTOM:
+        return bottom_score - top_score
+    return top_score - bottom_score
 
 
 def heuristic_advanced(board, player): 
