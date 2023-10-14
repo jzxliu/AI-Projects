@@ -134,7 +134,7 @@ def minimax_max_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     if len(moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, curr_player)
 
-    best_move, best_value = None, -math.inf
+    value, best_move, best_value = float, None, -math.inf
     depth_limit -= 1
 
     for move in moves:
@@ -168,7 +168,7 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     if len(moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, curr_player)
 
-    best_move, best_value = None, math.inf
+    value, best_move, best_value = float, None, math.inf
     depth_limit -= 1
 
     for move in moves:
