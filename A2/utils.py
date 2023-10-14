@@ -7,6 +7,7 @@
 ###############################################################################
 
 import sys
+from mancala_game import *
 
 ###############################################################################
 ### DO NOT MODIFY THE CODE BELOW
@@ -37,18 +38,21 @@ def get_opponent(player):
 
 def heuristic_basic(board, player):
     """
-    Compute the heuristic value of the current board for the current player 
+    Compute the heuristic value of the current board for the current player
     based on the basic heuristic function.
 
     :param board: the current board.
     :param player: the current player.
     :return: an estimated utility of the current board for the current player.
     """
+    top_score = board.mancalas[TOP]
+    bottom_score = board.mancalas[BOTTOM]
+    if player == BOTTOM:
+        return bottom_score - top_score
+    return top_score - bottom_score
 
-    raise NotImplementedError
 
-
-def heuristic_advanced(board, player): 
+def heuristic_advanced(board, player):
     """
     Compute the heuristic value of the current board for the current player
     based on the advanced heuristic function.
@@ -57,5 +61,10 @@ def heuristic_advanced(board, player):
     :param player: the current player.
     :return: an estimated heuristic value of the current board for the current player.
     """
-    
-    raise NotImplementedError
+    top_score = board.mancalas[TOP]
+    bottom_score = board.mancalas[BOTTOM]
+    top_stones = board.pockets[TOP]
+    bottom_stones = board.pockets[BOTTOM]
+    if player == BOTTOM:
+        return bottom_score - top_score + sum(bottom_stones) - sum(top_stones)
+    return top_score - bottom_score + sum(top_stones) - sum(bottom_stones)
