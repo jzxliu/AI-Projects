@@ -41,6 +41,7 @@ def alphabeta_max_basic(board, curr_player, alpha, beta, heuristic_func):
                     return best_move, best_value
     return best_move, best_value
 
+
 def alphabeta_min_basic(board, curr_player, alpha, beta, heuristic_func):
     """
     Perform Alpha-Beta Pruning for MIN player.
