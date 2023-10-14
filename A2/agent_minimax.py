@@ -176,10 +176,9 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
         return None, minimax
 
     best_move, best_value = None, math.inf
-    depth_limit -= 1
     for move in moves:
         next_board = play_move(board, curr_player, move)
-        _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit, cache)
+        _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit-1, cache)
         if value < best_value:
             best_move = move
             best_value = value
