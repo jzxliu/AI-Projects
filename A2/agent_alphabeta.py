@@ -25,7 +25,7 @@ def alphabeta_max_basic(board, curr_player, alpha, beta, heuristic_func):
     """
     moves = board.get_possible_moves(curr_player)
     if len(moves) == 0:
-        return None, heuristic_func(board)
+        return None, heuristic_func(board, curr_player)
 
     best_move, best_value = None, -math.inf
 
@@ -57,7 +57,7 @@ def alphabeta_min_basic(board, curr_player, alpha, beta, heuristic_func):
     """
     moves = board.get_possible_moves(curr_player)
     if len(moves) == 0:
-        return None, heuristic_func(board)
+        return None, heuristic_func(board, curr_player)
 
     best_move, best_value = None, math.inf
 
