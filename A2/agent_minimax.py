@@ -130,9 +130,9 @@ def minimax_max_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     :param cache: dict mapping (board, player) to [minimax, best move, depth]
     :return the best move and its minimmax value estimated by our heuristic function.
     """
-    if (board, curr_player) in cache.keys():
-        if cache[(board, curr_player)][2] > depth_limit:
-            return cache[(board, curr_player)][1], cache[(board, curr_player)][0]
+    # if (board, curr_player) in cache.keys():
+    #     if cache[(board, curr_player)][2] >= depth_limit:
+    #         return cache[(board, curr_player)][1], cache[(board, curr_player)][0]
 
     moves = board.get_possible_moves(curr_player)
     if len(moves) == 0 or depth_limit == 0:
@@ -165,9 +165,9 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     :param cache: zzz
     :return the best move and its minimmax value estimated by our heuristic function.
     """
-    if (board, curr_player) in cache.keys():
-        if cache[(board, curr_player)][2] > depth_limit:
-            return cache[(board, curr_player)][1], cache[(board, curr_player)][0]
+    # if (board, curr_player) in cache.keys():
+    #     if cache[(board, curr_player)][2] >= depth_limit:
+    #         return cache[(board, curr_player)][1], cache[(board, curr_player)][0]
 
     moves = board.get_possible_moves(curr_player)
     if len(moves) == 0 or depth_limit == 0:
