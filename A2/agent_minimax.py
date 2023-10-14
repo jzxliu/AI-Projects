@@ -134,7 +134,7 @@ def minimax_max_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     if len(moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, curr_player)
 
-    value, best_move, best_value = float, None, -math.inf
+    best_move, best_value = None, -math.inf
     depth_limit -= 1
 
     for move in moves:
@@ -142,7 +142,7 @@ def minimax_max_limit_caching(board, curr_player, heuristic_func, depth_limit, c
         if (next_board, curr_player) in cache and cache[(next_board, curr_player)][1] >= depth_limit:
             value = cache[(next_board, curr_player)][0]
         else:
-            _, value = minimax_min_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit - 1,
+            _, value = minimax_min_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
                                                  cache)
             cache[(next_board, curr_player)] = (value, depth_limit)
         if value > best_value:
@@ -168,7 +168,7 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     if len(moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, curr_player)
 
-    value, best_move, best_value = float, None, math.inf
+    best_move, best_value = None, math.inf
     depth_limit -= 1
 
     for move in moves:
@@ -176,7 +176,7 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
         if (next_board, curr_player) in cache and cache[(next_board, curr_player)][1] >= depth_limit:
             value = cache[(next_board, curr_player)][0]
         else:
-            _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit - 1,
+            _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
                                                  cache)
             cache[(next_board, curr_player)] = (value, depth_limit)
         if value < best_value:
