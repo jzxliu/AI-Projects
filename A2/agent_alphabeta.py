@@ -4,6 +4,8 @@
 # CSC 384 Fall 2023 Assignment 2
 # version 1.0
 ###############################################################################
+import math
+
 from mancala_game import Board, play_move
 from utils import *
 
@@ -21,8 +23,24 @@ def alphabeta_max_basic(board, curr_player, alpha, beta, heuristic_func):
     :param heuristic_func: the heuristic function
     :return the best move and its minimax value.
     """
+    moves = board.get_possible_moves(curr_player)
+    if len(moves) == 0:
+        return None, heuristic_func(board)
 
-    raise NotImplementedError
+    best_move, best_value = None, -math.inf
+
+    for move in moves:
+        next_board = play_move(board, curr_player, move)
+        _, value = alphabeta_min_basic(next_board, get_opponent(curr_player), alpha, beta, heuristic_func)
+        if value > best_value:
+            best_move = move
+            best_value = value
+            if best_value > alpha:
+                alpha = best_value
+                if alpha >= beta:
+                    return best_move, best_value
+    return best_move, best_value
+
 
 def alphabeta_min_basic(board, curr_player, alpha, beta, heuristic_func):
     """
@@ -37,8 +55,23 @@ def alphabeta_min_basic(board, curr_player, alpha, beta, heuristic_func):
     :param heuristic_func: the heuristic function
     :return the best move and its minimax value.
     """
+    moves = board.get_possible_moves(curr_player)
+    if len(moves) == 0:
+        return None, heuristic_func(board)
 
-    raise NotImplementedError
+    best_move, best_value = None, math.inf
+
+    for move in moves:
+        next_board = play_move(board, curr_player, move)
+        _, value = alphabeta_max_basic(next_board, get_opponent(curr_player), alpha, beta, heuristic_func)
+        if value < best_value:
+            best_move = move
+            best_value = value
+            if best_value < beta:
+                beta = best_value
+                if alpha >= beta:
+                    return best_move, best_value
+    return best_move, best_value
 
 def alphabeta_max_limit(board, curr_player, alpha, beta, heuristic_func, depth_limit):
     """
