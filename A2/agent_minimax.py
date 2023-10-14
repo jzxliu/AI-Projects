@@ -130,14 +130,14 @@ def minimax_max_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     :param cache: dict mapping (board, player) to [minimax, best move, depth]
     :return the best move and its minimmax value estimated by our heuristic function.
     """
-    if (board, curr_player) in cache.keys():
+    if (board, curr_player) in cache:
         if cache[(board, curr_player)][2] >= depth_limit:
             return cache[(board, curr_player)][1], cache[(board, curr_player)][0]
 
     moves = board.get_possible_moves(curr_player)
     if len(moves) == 0 or depth_limit == 0:
         minimax = heuristic_func(board, curr_player)
-        # cache[(board, curr_player)] = [minimax, None, depth_limit]
+        cache[(board, curr_player)] = [minimax, None, depth_limit]
         return None, minimax
 
     best_move, best_value = None, -math.inf
@@ -165,21 +165,21 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
     :param cache: zzz
     :return the best move and its minimmax value estimated by our heuristic function.
     """
-    if (board, curr_player) in cache.keys():
+    if (board, curr_player) in cache:
         if cache[(board, curr_player)][2] >= depth_limit:
             return cache[(board, curr_player)][1], cache[(board, curr_player)][0]
 
     moves = board.get_possible_moves(curr_player)
     if len(moves) == 0 or depth_limit == 0:
         minimax = heuristic_func(board, get_opponent(curr_player))
-        # cache[(board, curr_player)] = [minimax, None, depth_limit]
+        cache[(board, curr_player)] = [minimax, None, depth_limit]
         return None, minimax
 
     best_move, best_value = None, math.inf
-
+    depth_limit -= 1
     for move in moves:
         next_board = play_move(board, curr_player, move)
-        _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit - 1, cache)
+        _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit, cache)
         if value < best_value:
             best_move = move
             best_value = value
