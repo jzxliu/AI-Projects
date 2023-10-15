@@ -88,7 +88,23 @@ def alphabeta_max_limit(board, curr_player, alpha, beta, heuristic_func, depth_l
     :return the best move and its estimated minimax value.
     """
 
-    raise NotImplementedError
+    moves = board.get_possible_moves(curr_player)
+    if len(moves) == 0 or depth_limit == 0:
+        return None, heuristic_func(board, curr_player)
+
+    best_move, best_value = None, -math.inf
+
+    for move in moves:
+        next_board = play_move(board, curr_player, move)
+        _, value = alphabeta_min_limit(next_board, get_opponent(curr_player), alpha, beta, heuristic_func, depth_limit-1)
+        if value > best_value:
+            best_move = move
+            best_value = value
+            if best_value > alpha:
+                alpha = best_value
+                if alpha >= beta:
+                    return best_move, best_value
+    return best_move, best_value
 
 def alphabeta_min_limit(board, curr_player, alpha, beta, heuristic_func, depth_limit):
     """
@@ -104,8 +120,23 @@ def alphabeta_min_limit(board, curr_player, alpha, beta, heuristic_func, depth_l
     :param depth_limit: the depth limit
     :return the best move and its estimated minimax value.
     """
+    moves = board.get_possible_moves(curr_player)
+    if len(moves) == 0 or depth_limit == 0:
+        return None, heuristic_func(board, get_opponent(curr_player))
 
-    raise NotImplementedError
+    best_move, best_value = None, math.inf
+
+    for move in moves:
+        next_board = play_move(board, curr_player, move)
+        _, value = alphabeta_max_limit(next_board, get_opponent(curr_player), alpha, beta, heuristic_func, depth_limit-1)
+        if value < best_value:
+            best_move = move
+            best_value = value
+            if best_value < beta:
+                beta = best_value
+                if alpha >= beta:
+                    return best_move, best_value
+    return best_move, best_value
 
 def alphabeta_max_limit_caching(board, curr_player, alpha, beta, heuristic_func, depth_limit, cache):
     """
