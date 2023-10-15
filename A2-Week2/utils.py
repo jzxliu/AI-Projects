@@ -45,11 +45,7 @@ def heuristic_basic(board, player):
     :param player: the current player.
     :return: an estimated utility of the current board for the current player.
     """
-    top_score = board.mancalas[TOP]
-    bottom_score = board.mancalas[BOTTOM]
-    if player == BOTTOM:
-        return bottom_score - top_score
-    return top_score - bottom_score
+    return board.mancalas[player] - board.mancalas[get_opponent(player)]
 
 
 def heuristic_advanced(board, player):
