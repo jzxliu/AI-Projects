@@ -52,10 +52,6 @@ def heuristic_basic(board, player):
     """
     self_mancala = board.mancalas[player]
     opponent_mancala = board.mancalas[get_opponent(player)]
-    self_pockets = sum(board.pockets[player])
-    opponent_pockets = sum(board.pockets[get_opponent(player)])
-    if sum(board.pockets[player]) == 0 or sum(board.pockets[get_opponent(player)]) == 0:
-        return self_mancala - opponent_mancala
     return self_mancala - opponent_mancala
 
 
