@@ -38,12 +38,12 @@ def get_opponent(player):
 
 def heuristic_basic(board, player):
     """
-    Compute the heuristic value of the current board for the current player 
+    Compute the heuristic value of the current test_board1.txt for the current player
     based on the basic heuristic function.
 
-    :param board: the current board.
+    :param board: the current test_board1.txt.
     :param player: the current player.
-    :return: an estimated utility of the current board for the current player.
+    :return: an estimated utility of the current test_board1.txt for the current player.
     """
     top_score = board.mancalas[TOP]
     bottom_score = board.mancalas[BOTTOM]
@@ -54,12 +54,12 @@ def heuristic_basic(board, player):
 
 def heuristic_advanced(board, player): 
     """
-    Compute the heuristic value of the current board for the current player
+    Compute the heuristic value of the current test_board1.txt for the current player
     based on the advanced heuristic function.
 
-    :param board: the current board object.
+    :param board: the current test_board1.txt object.
     :param player: the current player.
-    :return: an estimated heuristic value of the current board for the current player.
+    :return: an estimated heuristic value of the current test_board1.txt for the current player.
     """
     top_score = board.mancalas[TOP]
     bottom_score = board.mancalas[BOTTOM]

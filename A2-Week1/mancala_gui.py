@@ -25,7 +25,7 @@ class MancalaGui(object):
 
         self.game = game_manager
         self.players = [player1, player2]
-        self.height = 2  #2 sides to the board
+        self.height = 2  #2 sides to the test_board1.txt
         self.width = self.game.dimension #pit count
         
         self.offset = 3
@@ -66,7 +66,7 @@ class MancalaGui(object):
             self.draw_board()
 
             possible_moves = self.game.get_possible_moves()
-            #a = get_possible_moves(self.game.board, self.game.current_player)
+            #a = get_possible_moves(self.game.test_board1.txt, self.game.current_player)
 
             if not possible_moves:
                 self.game.end_game()
@@ -205,7 +205,7 @@ def parse_args():
     )
 
     parser.add_argument("-d", "--dimension", type=int,
-                        help="Dimension of mancala board.")
+                        help="Dimension of mancala test_board1.txt.")
     parser.add_argument("-t", "--agentTop", 
                         help="Agent for the top player, by filename (including extension). If not specified, user inputs moves.")
     parser.add_argument("-b", "--agentBottom", 
@@ -219,7 +219,7 @@ def parse_args():
     parser.add_argument("-l", "--limit", type=int,
                         help="(Optional) Depth limit for agent to use.")
     parser.add_argument("-i", "--initialBoard", 
-                        help="File storing the initial state of the board. Overwrites dimension.")
+                        help="File storing the initial state of the test_board1.txt. Overwrites dimension.")
 
     args = parser.parse_args()    
     return args
@@ -230,7 +230,7 @@ def main():
     args = parse_args()
 
     if args.dimension is not None and args.dimension <= 0 and args.initialBoard is None: #if no dimension provided
-        print('Please provide a valid board size (at least 1).')
+        print('Please provide a valid test_board1.txt size (at least 1).')
         sys.exit(2)
     
     assert args.heuristicTop in [0, 1]

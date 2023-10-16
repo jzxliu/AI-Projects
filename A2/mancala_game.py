@@ -1,5 +1,5 @@
 ##########################################################
-# This module contains the main Mancala game which maintains the board, score, and players.  
+# This module contains the main Mancala game which maintains the test_board1.txt, score, and players.
 # Thanks to Daniel Bauer, Columbia University, for a version of Othello that this was based on
 # 
 # CSC 384 Fall 2023 Assignment 2
@@ -18,11 +18,11 @@ def read_initial_board(init_board):
     elif isinstance(init_board, str):
         return read_initial_board_file(init_board)
     else:
-        raise TypeError("init_board should be either a string filename or a list for the board")
+        raise TypeError("init_board should be either a string filename or a list for the test_board1.txt")
     
 def read_initial_board_list(init_board):
     """
-    Creates a new board from the given list. The list should be 3 elements where
+    Creates a new test_board1.txt from the given list. The list should be 3 elements where
 
     Element 1: List representing # stones in Top Player's pockets
     Element 2: List representing # stones in Bottom Player's pockets
@@ -61,7 +61,7 @@ class Board(object):
 
     def __init__(self, pockets, mancalas):
         """
-        Create a Mancala game board.
+        Create a Mancala game test_board1.txt.
         """
         self.dimension = len(pockets[TOP])
         self.pockets = pockets
@@ -77,7 +77,7 @@ class Board(object):
     
     def draw_board(self, return_str=False):
         """
-        Print the Mancala game board in a readable format.
+        Print the Mancala game test_board1.txt in a readable format.
         """
         dim = self.dimension
         mancalas = self.mancalas
@@ -132,7 +132,7 @@ class Board(object):
     
     def get_board_list(self):
         """
-        Get the board in the format of a list.
+        Get the test_board1.txt in the format of a list.
         """
         data = [", ".join([str(x) for x in self.pockets[0]]), 
                 ", ".join([str(x) for x in self.pockets[1]]), 
@@ -142,7 +142,7 @@ class Board(object):
     def get_possible_moves(self, player):
         """
         Return a list of all possible indices (representing pockets) that the 
-        current player can play on the current board.
+        current player can play on the current test_board1.txt.
         """
         moves = []
         for j in range(self.dimension):
@@ -157,7 +157,7 @@ class MancalaGameManager(object):
     def __init__(self, dimension=None, initial_board=None, current_player=TOP):
         """
         Create an object to manage the Mancala game.
-        Keeps track of the current board and the current player.
+        Keeps track of the current test_board1.txt and the current player.
         """
         assert dimension is not None or initial_board is not None
         if initial_board is not None:
@@ -176,7 +176,7 @@ class MancalaGameManager(object):
     def get_possible_moves(self, opponent=False):
         """
         Return a list of all possible indices (representing pockets) that the 
-        current player can play on the current board.
+        current player can play on the current test_board1.txt.
 
         if opponent = True, get possible moves for the opponent of the 
         current player instead. 
@@ -190,7 +190,7 @@ class MancalaGameManager(object):
     def end_game(self):
         """
         Call this function at the end of the game to move all remaining stones
-        on the board.
+        on the test_board1.txt.
         Opponent just moved and should have no moves left, only current player
         has stones to move.
         """
@@ -238,8 +238,8 @@ class MancalaGameManager(object):
 
 def play_move(board, player, move):
     """
-    Play a move on the current board. 
-    :param board: the current board
+    Play a move on the current test_board1.txt.
+    :param board: the current test_board1.txt
     :param player: the player to move.
     :param move: the move to perform. the index of the pocket.
     """  
@@ -260,14 +260,14 @@ def play_move(board, player, move):
         direction = False
         ind = move - 1
 
-    while stone_count > 0: #deposit stones around the board
-        # we are at the end of the board
+    while stone_count > 0: #deposit stones around the test_board1.txt
+        # we are at the end of the test_board1.txt
         if ind > (len(board.pockets[side])-1) or ind < 0:
             # swap side and change direction
             side = TOP if side == BOTTOM else BOTTOM 
             direction = not direction 
 
-            #if we are at the end of the board, 
+            #if we are at the end of the test_board1.txt,
             #deposit stone in a mancala before we continue
             if ind > (len(board.pockets[side]) - 1): 
                 if player == BOTTOM:
@@ -299,7 +299,7 @@ def play_move(board, player, move):
         else: 
             ind -= 1
 
-    #return a copy of the board details
+    #return a copy of the test_board1.txt details
     final_pockets = []
     for row in new_board: 
         final_pockets.append(tuple(row))

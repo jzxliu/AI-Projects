@@ -54,9 +54,9 @@ def add_tuples(tuple1, tuple2):
 
 def check_valid_move(board, robot, direction):
     """
-    Returns true if robot can move in direction on the board, false otherwise.
+    Returns true if robot can move in direction on the test_board1.txt, false otherwise.
 
-    board: Board
+    test_board1.txt: Board
     robot: Tuple
     direction: Tuple (e.g. (1, 0) or (0, -1))
     """
@@ -108,14 +108,14 @@ def get_successors(state):
 
 def dfs(init_board):
     """
-    Run the DFS algorithm given an initial board.
+    Run the DFS algorithm given an initial test_board1.txt.
 
     If the function finds a goal state, it returns a list of states representing
     the path from the initial state to the goal state in order and the cost of
     the solution found.
     Otherwise, it returns am empty list and -1.
 
-    :param init_board: The initial board.
+    :param init_board: The initial test_board1.txt.
     :type init_board: Board
     :return: (the path to goal state, solution cost)
     :rtype: List[State], int
@@ -137,14 +137,14 @@ def dfs(init_board):
 
 def a_star(init_board, hfn):
     """
-    Run the A_star search algorithm given an initial board and a heuristic function.
+    Run the A_star search algorithm given an initial test_board1.txt and a heuristic function.
 
     If the function finds a goal state, it returns a list of states representing
     the path from the initial state to the goal state in order and the cost of
     the solution found.
     Otherwise, it returns am empty list and -1.
 
-    :param init_board: The initial starting board.
+    :param init_board: The initial starting test_board1.txt.
     :type init_board: Board
     :param hfn: The heuristic function.
     :type hfn: Heuristic (a function that consumes a Board and produces a numeric heuristic value)
@@ -157,13 +157,13 @@ def a_star(init_board, hfn):
 
 def heuristic_basic(board):
     """
-    Returns the heuristic value for the given board
+    Returns the heuristic value for the given test_board1.txt
     based on the Manhattan Distance Heuristic function.
 
     Returns the sum of the Manhattan distances between each box 
     and its closest storage point.
 
-    :param board: The current board.
+    :param board: The current test_board1.txt.
     :type board: Board
     :return: The heuristic value.
     :rtype: int
@@ -185,7 +185,7 @@ def heuristic_advanced(board):
     """
     An advanced heuristic of your own choosing and invention.
 
-    :param board: The current board.
+    :param board: The current test_board1.txt.
     :type board: Board
     :return: The heuristic value.
     :rtype: int
@@ -207,7 +207,7 @@ def solve_puzzle(board: Board, algorithm: str, hfn):
     :rtype: List[State]
     """
 
-    print("Initial board")
+    print("Initial test_board1.txt")
     board.display()
 
     time_start = time.time()

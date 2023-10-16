@@ -14,9 +14,9 @@ def alphabeta_max_basic(board, curr_player, alpha, beta, heuristic_func):
     """
     Perform Alpha-Beta Pruning for MAX player.
     Return the best move and its minimax value.
-    If the board is a terminal state, return None as its best move.
+    If the test_board1.txt is a terminal state, return None as its best move.
 
-    :param board: the current board
+    :param board: the current test_board1.txt
     :param curr_player: the current player
     :param alpha: current alpha value
     :param beta: current beta value
@@ -46,9 +46,9 @@ def alphabeta_min_basic(board, curr_player, alpha, beta, heuristic_func):
     """
     Perform Alpha-Beta Pruning for MIN player.
     Return the best move and its minimax value.
-    If the board is a terminal state, return None as its best move.
+    If the test_board1.txt is a terminal state, return None as its best move.
 
-    :param board: the current board
+    :param board: the current test_board1.txt
     :param curr_player: the current player
     :param alpha: current alpha value
     :param beta: current beta value
@@ -77,9 +77,9 @@ def alphabeta_max_limit(board, curr_player, alpha, beta, heuristic_func, depth_l
     """
     Perform Alpha-Beta Pruning for MAX player up to the given depth limit.
     Return the best move and its estimated minimax value.
-    If the board is a terminal state, return None as its best move.
+    If the test_board1.txt is a terminal state, return None as its best move.
 
-    :param board: the current board
+    :param board: the current test_board1.txt
     :param curr_player: the current player
     :param alpha: current alpha value
     :param beta: current beta value
@@ -110,9 +110,9 @@ def alphabeta_min_limit(board, curr_player, alpha, beta, heuristic_func, depth_l
     """
     Perform Alpha-Beta Pruning for MIN player up to the given depth limit.
     Return the best move and its estimated minimax value.
-    If the board is a terminal state, return None as its best move.
+    If the test_board1.txt is a terminal state, return None as its best move.
 
-    :param board: the current board
+    :param board: the current test_board1.txt
     :param curr_player: the current player
     :param alpha: current alpha value
     :param beta: current beta value
@@ -142,9 +142,9 @@ def alphabeta_max_limit_caching(board, curr_player, alpha, beta, heuristic_func,
     """
     Perform Alpha-Beta Pruning for MAX player up to the given depth limit and the option of caching states.
     Return the best move and its estimated minimax value.
-    If the board is a terminal state, return None as its best move.
+    If the test_board1.txt is a terminal state, return None as its best move.
 
-    :param board: the current board
+    :param board: the current test_board1.txt
     :param curr_player: the current player
     :param alpha: current alpha value
     :param beta: current beta value
@@ -180,9 +180,9 @@ def alphabeta_min_limit_caching(board, curr_player, alpha, beta, heuristic_func,
     """
     Perform Alpha-Beta Pruning for MIN player up to the given depth limit and the option of caching states.
     Return the best move and its estimated minimax value.
-    If the board is a terminal state, return None as its best move.
+    If the test_board1.txt is a terminal state, return None as its best move.
 
-    :param board: the current board
+    :param board: the current test_board1.txt
     :param curr_player: the current player
     :param alpha: current alpha value
     :param beta: current beta value
@@ -223,7 +223,7 @@ def run_ai():
     """
     This function establishes communication with the game manager.
     It first introduces itself and receives its color.
-    Then it repeatedly receives the current score and current board state
+    Then it repeatedly receives the current score and current test_board1.txt state
     until the game is over.
     """
     print("Mancala AI")  # First line is the name of this AI

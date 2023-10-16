@@ -16,28 +16,28 @@ CHAR_ROBOT_IN_STORAGE = 'A' # a robot is at a storage point.
 
 class Board:
     """
-    Represents the puzzle board.
+    Represents the puzzle test_board1.txt.
     """
 
     def __init__(self, name: str, width: int, height: int, robots: object, boxes: object, storage: object,
                  obstacles: object) -> object:
         """
-        Creates a Sokoban board.
+        Creates a Sokoban test_board1.txt.
 
-        :param name: the name of the Sokoban board
+        :param name: the name of the Sokoban test_board1.txt
         :type name: str
-        :param width: the width of the Sokoban board
+        :param width: the width of the Sokoban test_board1.txt
         :type width: int
-        :param height: the height of the Sokoban board
+        :param height: the height of the Sokoban test_board1.txt
         :type height: int
-        :param robots: positions for each robot that is on the board. Each robot position is a tuple (x, y), 
+        :param robots: positions for each robot that is on the test_board1.txt. Each robot position is a tuple (x, y),
                        that denotes the robot’s x and y position.
         :type robots: List[tuple]
         :param boxes: positions for each box in a frozenset. Each position is an (x, y) tuple.
         :type boxes: frozenset[tuple]
-        :param storage: positions for each storage bin that is on the board.
+        :param storage: positions for each storage bin that is on the test_board1.txt.
         :type storage: frozenset[tuple]
-        :param obstacles: locations of all of the obstacles (i.e. walls) on the board.
+        :param obstacles: locations of all of the obstacles (i.e. walls) on the test_board1.txt.
         :type obstacles: frozenset[tuple]
         :rtype: Board
         """
@@ -51,7 +51,7 @@ class Board:
 
     def __hash__(self):
         '''
-        Return a data item that can be used as a dictionary key to UNIQUELY represent a board.
+        Return a data item that can be used as a dictionary key to UNIQUELY represent a test_board1.txt.
         '''
         return hash(self.__str__())
 
@@ -116,7 +116,7 @@ class State:
 
     def __init__(self, board: Board, hfn, f: int, depth: int, parent=None):
         """
-        :param board: The board of the state.
+        :param board: The test_board1.txt of the state.
         :type board: Board
         :param parent: The parent of current state.
         :type parent: Optional[State]

@@ -20,7 +20,7 @@ class MancalaCommandLine(object):
 
         self.game = game_manager
         self.players = [player1, player2]
-        self.height = 2  #2 sides to the board
+        self.height = 2  #2 sides to the test_board1.txt
         self.width = self.game.dimension #pit count
         
         self.offset = 3
@@ -37,8 +37,8 @@ class MancalaCommandLine(object):
             text = text[1:]
 
         if text == "S":
-            # TA hack for easily generating board states
-            print("Saved current board state to curr_board.txt")
+            # TA hack for easily generating test_board1.txt states
+            print("Saved current test_board1.txt state to curr_board.txt")
             self.save_board("curr_board.txt")
             raise InvalidMoveError
 
@@ -141,9 +141,9 @@ def parse_args():
     )
 
     parser.add_argument("-d", "--dimension", type=int,
-                        help="Dimension of mancala board.")
+                        help="Dimension of mancala test_board1.txt.")
     parser.add_argument("-i", "--initialBoard", 
-                        help="File storing the initial state of the board. Overwrites dimension.")
+                        help="File storing the initial state of the test_board1.txt. Overwrites dimension.")
 
     parser.add_argument("-t", "--agentTop", 
                         help="Agent for the top player, by filename (including extension). If not specified, user inputs moves.")
@@ -170,7 +170,7 @@ def main():
     args = parse_args()
 
     if args.dimension is not None and args.dimension <= 0 and args.initialBoard is None: #if no dimension provided
-        print('Please provide a valid board size (at least 1).')
+        print('Please provide a valid test_board1.txt size (at least 1).')
         sys.exit(2)
     
     assert args.heuristicTop in [0, 1]

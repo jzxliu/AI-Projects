@@ -17,9 +17,9 @@ from mancala_game import Board
 
 def select_move(board, player):
     """
-    Given a board and a player color, decide on a move. 
+    Given a test_board1.txt and a player color, decide on a move.
     The return value is a tuple of integers (i,j), where
-    i is the column and j is the row on the board.  
+    i is the column and j is the row on the test_board1.txt.
     """
 
     # We just get a list of all permitted moves in this state and select a random one!
@@ -35,7 +35,7 @@ def run_ai():
     """
     This function establishes communication with the game manager. 
     It first introduces itself and receives its color. 
-    Then it repeatedly receives the current score and current board state
+    Then it repeatedly receives the current score and current test_board1.txt state
     until the game is over. 
     """
     print("Randy") # First line is the name of this AI  
