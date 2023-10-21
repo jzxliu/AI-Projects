@@ -141,7 +141,7 @@ def minimax_max_limit_caching(board, curr_player, heuristic_func, depth_limit, c
         next_board = play_move(board, curr_player, move)
         if (next_board, curr_player) in cache:
             value, cache_depth = cache[(next_board, curr_player)]
-            if cache_depth < depth_limit:
+            if cache_depth >= depth_limit:
                 _, value = minimax_min_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
                                                      cache)
         else:
@@ -178,7 +178,7 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
         next_board = play_move(board, curr_player, move)
         if (next_board, curr_player) in cache:
             value, cache_depth = cache[(next_board, curr_player)]
-            if cache_depth < depth_limit:
+            if cache_depth >= depth_limit:
                 _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
                                                      cache)
         else:
