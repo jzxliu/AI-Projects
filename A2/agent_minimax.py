@@ -139,15 +139,12 @@ def minimax_max_limit_caching(board, curr_player, heuristic_func, depth_limit, c
 
     for move in moves:
         next_board = play_move(board, curr_player, move)
-        if (next_board, curr_player) in cache:
-            value, cache_depth = cache[(next_board, curr_player)]
-            if cache_depth >= depth_limit:
-                _, value = minimax_min_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
-                                                     cache)
+        if (next_board, curr_player) in cache and abs(cache[(next_board, curr_player)][1]) >= depth_limit:
+            value = cache[(next_board, curr_player)][0]
         else:
             _, value = minimax_min_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
                                                  cache)
-            cache[(next_board, curr_player)] = value, depth_limit
+            cache[(next_board, curr_player)] = (value, depth_limit)
         if value > best_value:
             best_move = move
             best_value = value
@@ -176,15 +173,12 @@ def minimax_min_limit_caching(board, curr_player, heuristic_func, depth_limit, c
 
     for move in moves:
         next_board = play_move(board, curr_player, move)
-        if (next_board, curr_player) in cache:
-            value, cache_depth = cache[(next_board, curr_player)]
-            if cache_depth >= depth_limit:
-                _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
-                                                     cache)
+        if (next_board, curr_player) in cache and abs(cache[(next_board, curr_player)][1]) >= depth_limit:
+            value = cache[(next_board, curr_player)][0]
         else:
             _, value = minimax_max_limit_caching(next_board, get_opponent(curr_player), heuristic_func, depth_limit,
                                                  cache)
-            cache[(next_board, curr_player)] = value, depth_limit
+            cache[(next_board, curr_player)] = (value, depth_limit)
         if value < best_value:
             best_move = move
             best_value = value
