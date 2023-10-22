@@ -24,7 +24,8 @@ def alphabeta_max_basic(board, curr_player, alpha, beta, heuristic_func):
     :return the best move and its minimax value.
     """
     moves = board.get_possible_moves(curr_player)
-    if len(moves) == 0:
+    opponent_moves = board.get_possible_moves(get_opponent(curr_player))
+    if len(moves) == 0 or len(opponent_moves) == 0:
         return None, heuristic_func(board, curr_player)
 
     best_move, best_value = None, -math.inf
@@ -56,7 +57,8 @@ def alphabeta_min_basic(board, curr_player, alpha, beta, heuristic_func):
     :return the best move and its minimax value.
     """
     moves = board.get_possible_moves(curr_player)
-    if len(moves) == 0:
+    opponent_moves = board.get_possible_moves(get_opponent(curr_player))
+    if len(moves) == 0 or len(opponent_moves) == 0:
         return None, heuristic_func(board, get_opponent(curr_player))
 
     best_move, best_value = None, math.inf
@@ -89,7 +91,8 @@ def alphabeta_max_limit(board, curr_player, alpha, beta, heuristic_func, depth_l
     """
 
     moves = board.get_possible_moves(curr_player)
-    if len(moves) == 0 or depth_limit == 0:
+    opponent_moves = board.get_possible_moves(get_opponent(curr_player))
+    if len(moves) == 0 or len(opponent_moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, curr_player)
 
     best_move, best_value = None, -math.inf
@@ -121,7 +124,8 @@ def alphabeta_min_limit(board, curr_player, alpha, beta, heuristic_func, depth_l
     :return the best move and its estimated minimax value.
     """
     moves = board.get_possible_moves(curr_player)
-    if len(moves) == 0 or depth_limit == 0:
+    opponent_moves = board.get_possible_moves(get_opponent(curr_player))
+    if len(moves) == 0 or len(opponent_moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, get_opponent(curr_player))
 
     best_move, best_value = None, math.inf
@@ -153,7 +157,8 @@ def alphabeta_max_limit_caching(board, curr_player, alpha, beta, heuristic_func,
     :return the best move and its estimated minimax value.
     """
     moves = board.get_possible_moves(curr_player)
-    if len(moves) == 0 or depth_limit == 0:
+    opponent_moves = board.get_possible_moves(get_opponent(curr_player))
+    if len(moves) == 0 or len(opponent_moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, curr_player)
 
     best_move, best_value = None, -math.inf
@@ -191,7 +196,8 @@ def alphabeta_min_limit_caching(board, curr_player, alpha, beta, heuristic_func,
     :return the best move and its estimated minimax value.
     """
     moves = board.get_possible_moves(curr_player)
-    if len(moves) == 0 or depth_limit == 0:
+    opponent_moves = board.get_possible_moves(get_opponent(curr_player))
+    if len(moves) == 0 or len(opponent_moves) == 0 or depth_limit == 0:
         return None, heuristic_func(board, get_opponent(curr_player))
 
     best_move, best_value = None, math.inf
