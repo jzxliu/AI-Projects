@@ -166,12 +166,13 @@ def alphabeta_max_limit_caching(board, curr_player, alpha, beta, heuristic_func,
 
     for move in moves:
         next_board = play_move(board, curr_player, move)
-        if (next_board, curr_player) in cache and abs(cache[(next_board, curr_player)][1]) >= depth_limit:
+        if (next_board, curr_player) in cache and abs(cache[(next_board, curr_player)][1]) >= depth_limit and \
+                cache[(next_board, curr_player)][2] <= alpha and cache[(next_board, curr_player)][3] >= beta:
             value = cache[(next_board, curr_player)][0]
         else:
             _, value = alphabeta_min_limit_caching(next_board, get_opponent(curr_player), alpha, beta, heuristic_func,
                                                    depth_limit, cache)
-            cache[(next_board, curr_player)] = (value, depth_limit)
+            cache[(next_board, curr_player)] = [value, depth_limit, alpha, beta]
         if value > best_value:
             best_move = move
             best_value = value
@@ -205,12 +206,13 @@ def alphabeta_min_limit_caching(board, curr_player, alpha, beta, heuristic_func,
 
     for move in moves:
         next_board = play_move(board, curr_player, move)
-        if (next_board, curr_player) in cache and abs(cache[(next_board, curr_player)][1]) >= depth_limit:
+        if (next_board, curr_player) in cache and abs(cache[(next_board, curr_player)][1]) >= depth_limit and \
+                cache[(next_board, curr_player)][2] <= alpha and cache[(next_board, curr_player)][3] >= beta:
             value = cache[(next_board, curr_player)][0]
         else:
             _, value = alphabeta_max_limit_caching(next_board, get_opponent(curr_player), alpha, beta, heuristic_func,
                                                    depth_limit, cache)
-            cache[(next_board, curr_player)] = (value, depth_limit)
+            cache[(next_board, curr_player)] = [value, depth_limit, alpha, beta]
         if value < best_value:
             best_move = move
             best_value = value
