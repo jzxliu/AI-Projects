@@ -68,4 +68,5 @@ def heuristic_advanced(board, player):
     opponent_mancala = board.mancalas[get_opponent(player)]
     self_pockets = sum(board.pockets[player])
     opponent_pockets = sum(board.pockets[get_opponent(player)])
-    return self_mancala - opponent_mancala + self_pockets - opponent_pockets
+    weight = 0.6
+    return self_mancala - opponent_mancala + (weight * (self_pockets - opponent_pockets))
