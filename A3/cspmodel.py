@@ -173,12 +173,12 @@ def create_row_and_col_constraints(dim, sat_tuples, variables):
         for j in range(dim):
             for k in range(j + 1, dim):
                 # Row Constraint
-                x = Constraint("Row " + str((i, j)) + ", " + str((i, k)), [variables[i][j], variables[i][k]])
+                x = Constraint("Row " + str((i, j)) + ", " + str((i, k)), [variables[i * dim + j], variables[i * dim + k]])
                 x.add_satisfying_tuples(sat_tuples)
                 constraints.append(x)
 
                 # Column Constraint
-                y = Constraint("Col " + str((j, i)) + ", " + str((k, i)), [variables[j][i], variables[k][i]])
+                y = Constraint("Col " + str((j, i)) + ", " + str((k, i)), [variables[j * dim + i], variables[k * dim + i]])
                 y.add_satisfying_tuples(sat_tuples)
                 constraints.append(y)
 
