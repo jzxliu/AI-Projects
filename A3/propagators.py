@@ -34,8 +34,35 @@ def prop_FC(csp, last_assigned_var=None):
         Also returns a list of variable and value pairs pruned. 
     :rtype: boolean, List[(Variable, Value)]
     """
+    pruned = []
 
-    raise NotImplementedError
+    if not last_assigned_var:
+        constraints = csp.get_all_cons()
+    else:
+        constraints = csp.get_cons_with_var(last_assigned_var)
+
+    for c in constraints:
+        if c.get_num_unassigned_vars() == 1:
+            unassigned = c.get_unassigned_vars()[0]
+            for value in unassigned.cur_domain():
+                assigned = [var.get_assigned_value for var in c.get_scope]
+                assigned[assigned.index(None)] = value
+                if not c.check(assigned):
+                    unassigned.prune_value(value)
+                    pruned.append((unassigned, value))
+                    if unassigned.cur_domain_size() == 0:
+                        return False, pruned
+    return True, pruned
+
+
+
+
+
+
+
+
+
+
 
 
 def prop_AC3(csp, last_assigned_var=None):
@@ -65,8 +92,9 @@ def prop_AC3(csp, last_assigned_var=None):
         all the constraints and a list of variable and value pairs pruned. 
     :rtype: boolean, List[(Variable, Value)]
     """
-    
+
     raise NotImplementedError
+
 
 def ord_mrv(csp):
     """
@@ -81,8 +109,15 @@ def ord_mrv(csp):
     :returns: the next variable to assign based on MRV
 
     """
-
-    raise NotImplementedError
+    unassigned_vars = csp.get_all_unasgn_vars()
+    least = None
+    for var in unassigned_vars:
+        if least is None:
+            least = var
+        else:
+            if var.cur_domain_size() < least.cur_domain_size():
+                least = var
+    return least
 
 
 ###############################################################################
@@ -111,11 +146,11 @@ def prop_BT(csp, last_assigned_var=None):
     :rtype: boolean, List[(Variable, Value)]
 
     """
-    
+
     # If we haven't assigned any variable yet, return true.
     if not last_assigned_var:
         return True, []
-        
+
     # Check all the constraints that contain the last assigned variable.
     for c in csp.get_cons_with_var(last_assigned_var):
 
@@ -123,15 +158,15 @@ def prop_BT(csp, last_assigned_var=None):
         if c.get_num_unassigned_vars() == 0:
 
             # get the variables
-            vars = c.get_scope() 
+            vars = c.get_scope()
 
             # get the list of values
             vals = []
-            for var in vars: #
+            for var in vars:  #
                 vals.append(var.get_assigned_value())
 
             # check if the constraint is satisfied
-            if not c.check(vals): 
+            if not c.check(vals):
                 return False, []
 
     return True, []
