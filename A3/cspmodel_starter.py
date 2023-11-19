@@ -10,6 +10,7 @@
 from board import *
 from cspbase import *
 
+
 def kropki_model(board):
     """
     Create a CSP for a Kropki Sudoku Puzzle given a board of dimension.
@@ -37,11 +38,30 @@ def kropki_model(board):
     :rtype: CSP, List[List[Variable]]
 
     """
+    dim = board.dimension
+    vars = create_variables(dim)
+    csp = CSP("Kropki", vars)
 
-    raise NotImplementedError
-    
-    
-    
+    diff_tuples = satisfying_tuples_difference_constraints(dim)
+    white_tuples = satisfying_tuples_white_dots(dim)
+    black_tuples = satisfying_tuples_black_dots(dim)
+
+    diff_constraints = create_row_and_col_constraints(dim, diff_tuples, vars)
+    cage_constraints = create_cage_constraints(dim, diff_tuples, vars)
+    dot_constraints = create_dot_constraints(dim, board.dots, white_tuples, black_tuples, vars)
+
+    for c in diff_constraints:
+        csp.add_constraint(c)
+
+    for c in cage_constraints:
+        csp.add_constraint(c)
+
+    for c in dot_constraints:
+        csp.add_constraint(c)
+
+    return csp
+
+
 def create_initial_domain(dim):
     """
     Return a list of values for the initial domain of any unassigned variable.
@@ -54,8 +74,7 @@ def create_initial_domain(dim):
     :rtype: List[int]
     """
 
-    raise NotImplementedError
-
+    return list(range(1, dim + 1))
 
 
 def create_variables(dim):
@@ -71,49 +90,67 @@ def create_variables(dim):
     :rtype: List[Variables]
     """
 
-    raise NotImplementedError
+    variables = []
+    for row in range(dim):
+        for col in range(dim):
+            variables.append(Variable("Var(" + str(row) + ", " + str(col) + ").", create_initial_domain(dim)))
+    return variables
 
-    
+
 def satisfying_tuples_difference_constraints(dim):
     """
-    Return a list of satifying tuples for binary difference constraints.
+    Return a list of satisfying tuples for binary difference constraints.
 
     :param dim: Size of the board
     :type dim: int
 
-    :returns: A list of satifying tuples
+    :returns: A list of satisfying tuples
     :rtype: List[(int,int)]
     """
+    tuples = []
+    for i in range(1, dim + 1):
+        for j in range(1, dim + 1):
+            if i != j:
+                tuples.append((i, j))
+    return tuples
 
-    raise NotImplementedError
-  
-  
+
 def satisfying_tuples_white_dots(dim):
     """
-    Return a list of satifying tuples for white dot constraints.
+    Return a list of satisfying tuples for white dot constraints.
 
     :param dim: Size of the board
     :type dim: int
 
-    :returns: A list of satifying tuples
+    :returns: A list of satisfying tuples
     :rtype: List[(int,int)]
     """
+    tuples = []
+    for i in range(1, dim + 1):
+        for j in range(1, dim + 1):
+            if i + 1 == j or i == j + 1:
+                tuples.append((i, j))
+    return tuples
 
-    raise NotImplementedError
-  
+
 def satisfying_tuples_black_dots(dim):
     """
-    Return a list of satifying tuples for black dot constraints.
+    Return a list of satisfying tuples for black dot constraints.
 
     :param dim: Size of the board
     :type dim: int
 
-    :returns: A list of satifying tuples
+    :returns: A list of satisfying tuples
     :rtype: List[(int,int)]
     """
+    tuples = []
+    for i in range(1, dim + 1):
+        for j in range(1, dim + 1):
+            if i * 2 == j or i == j * 2:
+                tuples.append((i, j))
+    return tuples
 
-    raise NotImplementedError
-    
+
 def create_row_and_col_constraints(dim, sat_tuples, variables):
     """
     Create and return a list of binary all-different row/column constraints.
@@ -131,10 +168,23 @@ def create_row_and_col_constraints(dim, sat_tuples, variables):
     :returns: A list of binary all-different constraints
     :rtype: List[Constraint]
     """
-    
-    raise NotImplementedError
-    
-    
+    constraints = []
+    for i in range(dim):
+        for j in range(dim):
+            for k in range(j + 1, dim):
+                # Row Constraint
+                x = Constraint("Row " + str((i, j)) + ", " + str((i, k)), [variables[i][j], variables[i][k]])
+                x.add_satisfying_tuples(sat_tuples)
+                constraints.append(x)
+
+                # Column Constraint
+                y = Constraint("Col " + str((j, i)) + ", " + str((k, i)), [variables[j][i], variables[k][i]])
+                y.add_satisfying_tuples(sat_tuples)
+                constraints.append(y)
+
+    return constraints
+
+
 def create_cage_constraints(dim, sat_tuples, variables):
     """
     Create and return a list of binary all-different constraints for all cages.
@@ -152,9 +202,33 @@ def create_cage_constraints(dim, sat_tuples, variables):
     :returns: A list of binary all-different constraints
     :rtype: List[Constraint]
     """
+    constraints = []
 
-    raise NotImplementedError
-    
+    if dim == 6:
+        for x1 in range(dim):
+            for y1 in range(dim):
+                for x2 in range(dim):
+                    for y2 in range(dim):
+                        if (x1 // 2 == x2 // 2) and (y1 // 3 == y2 // 3):
+                            var1 = variables[x1][y1]
+                            var2 = variables[x2][y2]
+                            constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
+                            constraint.add_satisfying_tuples(sat_tuples)
+                            constraints.append(constraint)
+    if dim == 9:
+        for x1 in range(dim):
+            for y1 in range(dim):
+                for x2 in range(dim):
+                    for y2 in range(dim):
+                        if (x1 // 3 == x2 // 3) and (y1 // 3 == y2 // 3):
+                            var1 = variables[x1][y1]
+                            var2 = variables[x2][y2]
+                            constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
+                            constraint.add_satisfying_tuples(sat_tuples)
+                            constraints.append(constraint)
+    return constraints
+
+
 def create_dot_constraints(dim, dots, white_tuples, black_tuples, variables):
     """
     Create and return a list of binary constraints, one for each dot.
@@ -180,5 +254,16 @@ def create_dot_constraints(dim, dots, white_tuples, black_tuples, variables):
     :rtype: List[Constraint]
     """
 
-    raise NotImplementedError
+    constraints = []
+    for dot in dots:
+        var1 = variables[dot.cell_row][dot.cell_col]
+        var2 = variables[dot.cell2_row][dot.cell2_col]
 
+        constraint = Constraint("Dot " + str(var1) + " and " + str(var2), [var1, var2])
+        if dot.color == CHAR_BLACK:
+            constraint.add_satisfying_tuples(black_tuples)
+        elif dot.color == CHAR_WHITE:
+            constraint.add_satisfying_tuples(white_tuples)
+        constraints.append(constraint)
+
+    return constraints

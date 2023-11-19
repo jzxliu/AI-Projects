@@ -9,8 +9,8 @@ CHAR_BLACK = '*'
 CHAR_WHITE = 'o'
 CHAR_EMPTY = '.'
 
-class Dot:
 
+class Dot:
     """
     This class represents a dot drawn on the board.
     """
@@ -35,7 +35,7 @@ class Dot:
 
         self.location = location
 
-        if location == True: 
+        if location == True:
             # dot is to the right of the cell in [cell_row, cell_col].
             self.cell2_row = cell_row
             self.cell2_col = cell_col + 1
@@ -59,7 +59,7 @@ class Board:
 
         # initialize the list of dots
         self.dots = []
-        
+
     def __str__(self):
         """
         Convert the current board to a readable string representation.
@@ -69,7 +69,7 @@ class Board:
         out_array = []
 
         # create an array with space characters.
-        out_array.append([' ']*(self.dimension * 2 + 1))
+        out_array.append([' '] * (self.dimension * 2 + 1))
         for row in range(self.dimension):
             tmp = []
             for col in range(self.dimension):
@@ -78,9 +78,9 @@ class Board:
                     tmp.append(CHAR_EMPTY)
                 else:
                     tmp.append(self.cells[row][col])
-            tmp.append(' ')    
+            tmp.append(' ')
             out_array.append(tmp)
-            out_array.append([' ']*(self.dimension * 2 + 1))
+            out_array.append([' '] * (self.dimension * 2 + 1))
 
         # add borders
         if self.dimension == 6:
@@ -89,7 +89,7 @@ class Board:
             for row in range(len(out_array)):
                 for col in range(len(out_array[0])):
                     if col % 4 == 0:
-                        out_array[row][col] = '|'    
+                        out_array[row][col] = '|'
             for row in range(len(out_array)):
                 for col in range(len(out_array[0])):
                     if row % 6 == 0:
@@ -101,7 +101,7 @@ class Board:
             for row in range(len(out_array)):
                 for col in range(len(out_array[0])):
                     if col % 6 == 0:
-                        out_array[row][col] = '|'            
+                        out_array[row][col] = '|'
             for row in range(len(out_array)):
                 for col in range(len(out_array[0])):
                     if row % 6 == 0:
