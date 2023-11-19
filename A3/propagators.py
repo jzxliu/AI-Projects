@@ -45,24 +45,18 @@ def prop_FC(csp, last_assigned_var=None):
         if c.get_num_unassigned_vars() == 1:
             unassigned = c.get_unassigned_vars()[0]
             for value in unassigned.cur_domain():
-                assigned = [var.get_assigned_value for var in c.get_scope()]
-                assigned[assigned.index(None)] = value
+                assigned = []
+                for var in c.get_scope():
+                    if not var.is_assigned():
+                        assigned.append(value)
+                    else:
+                        assigned.append(var.get_assigned_value)
                 if not c.check(assigned):
                     unassigned.prune_value(value)
                     pruned.append((unassigned, value))
                     if unassigned.cur_domain_size() == 0:
                         return False, pruned
     return True, pruned
-
-
-
-
-
-
-
-
-
-
 
 
 def prop_AC3(csp, last_assigned_var=None):
