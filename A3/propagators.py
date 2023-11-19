@@ -45,7 +45,7 @@ def prop_FC(csp, last_assigned_var=None):
         if c.get_num_unassigned_vars() == 1:
             unassigned = c.get_unassigned_vars()[0]
             for value in unassigned.cur_domain():
-                assigned = [var.get_assigned_value for var in c.get_scope]
+                assigned = [var.get_assigned_value for var in c.get_scope()]
                 assigned[assigned.index(None)] = value
                 if not c.check(assigned):
                     unassigned.prune_value(value)
