@@ -210,8 +210,8 @@ def create_cage_constraints(dim, sat_tuples, variables):
                 for x2 in range(dim):
                     for y2 in range(dim):
                         if (x1 // 2 == x2 // 2) and (y1 // 3 == y2 // 3):
-                            var1 = variables[x1][y1]
-                            var2 = variables[x2][y2]
+                            var1 = variables[x1 * dim + y1]
+                            var2 = variables[x2 * dim + y2]
                             constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
                             constraint.add_satisfying_tuples(sat_tuples)
                             constraints.append(constraint)
@@ -221,8 +221,8 @@ def create_cage_constraints(dim, sat_tuples, variables):
                 for x2 in range(dim):
                     for y2 in range(dim):
                         if (x1 // 3 == x2 // 3) and (y1 // 3 == y2 // 3):
-                            var1 = variables[x1][y1]
-                            var2 = variables[x2][y2]
+                            var1 = variables[x1 * dim + y1]
+                            var2 = variables[x2 * dim + y2]
                             constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
                             constraint.add_satisfying_tuples(sat_tuples)
                             constraints.append(constraint)
@@ -256,8 +256,8 @@ def create_dot_constraints(dim, dots, white_tuples, black_tuples, variables):
 
     constraints = []
     for dot in dots:
-        var1 = variables[dot.cell_row][dot.cell_col]
-        var2 = variables[dot.cell2_row][dot.cell2_col]
+        var1 = variables[dot.cell_row * dim + dot.cell_col]
+        var2 = variables[dot.cell2_row * dim + dot.cell2_col]
 
         constraint = Constraint("Dot " + str(var1) + " and " + str(var2), [var1, var2])
         if dot.color == CHAR_BLACK:
