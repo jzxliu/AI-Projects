@@ -118,20 +118,6 @@ def prop_AC3(csp, last_assigned_var=None):
     return True, pruned
 
 
-def revise(csp, var, constraint):
-    revised = False
-    pruned = []
-    for value in var.cur_domain():
-        # Check if value satisfies the constraint with any assignment to other variables
-        if not any(
-                [constraint.check([value if v == var else v.get_assigned_value() for v in constraint.get_scope()]) for v
-                 in constraint.get_scope() if v != var]):
-            var.prune_value(value)
-            pruned.append((var, value))
-            revised = True
-    return revised, pruned
-
-
 def ord_mrv(csp):
     """
     Implement the Minimum Remaining Values (MRV) heuristic.
