@@ -87,8 +87,49 @@ def prop_AC3(csp, last_assigned_var=None):
         all the constraints and a list of variable and value pairs pruned. 
     :rtype: boolean, List[(Variable, Value)]
     """
+    pruned = []
 
-    raise NotImplementedError
+    if not last_assigned_var:
+        constraints = csp.get_all_cons()
+    else:
+        constraints = csp.get_cons_with_var(last_assigned_var)
+
+    while len(constraints) != 0:
+        c = constraints.pop(0)
+        for x in c.get_scope:
+            revised = False
+            for x_val in x.cur_domain:
+                works = False
+                for y in c.get_scope:
+                    if y != x:
+                        for y_val in y.cur_domain:
+                            if c.check((x_val, y_val)):
+                                works = True
+                if not works:
+                    x.prune_value(x_val)
+                    pruned.append((x, x_val))
+                    revised = True
+                    if x.cur_domain_size == 0:
+                        return False, pruned
+            if revised:
+                for new_c in csp.get_cons_with_var(x):
+                    if new_c != c and new_c not in constraints:
+                        constraints.append(new_c)
+    return True, pruned
+
+
+def revise(csp, var, constraint):
+    revised = False
+    pruned = []
+    for value in var.cur_domain():
+        # Check if value satisfies the constraint with any assignment to other variables
+        if not any(
+                [constraint.check([value if v == var else v.get_assigned_value() for v in constraint.get_scope()]) for v
+                 in constraint.get_scope() if v != var]):
+            var.prune_value(value)
+            pruned.append((var, value))
+            revised = True
+    return revised, pruned
 
 
 def ord_mrv(csp):
