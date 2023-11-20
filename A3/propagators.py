@@ -96,11 +96,11 @@ def prop_AC3(csp, last_assigned_var=None):
 
     while len(constraints) != 0:
         c = constraints.pop(0)
-        for x in c.get_scope:
+        for x in c.get_scope():
             revised = False
             for x_val in x.cur_domain:
                 works = False
-                for y in c.get_scope:
+                for y in c.get_scope():
                     if y != x:
                         for y_val in y.cur_domain:
                             if c.check((x_val, y_val)):
