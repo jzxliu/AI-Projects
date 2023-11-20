@@ -217,8 +217,8 @@ def create_cage_constraints(dim, sat_tuples, variables):
             for y1 in range(dim):
                 for y2 in range(dim):
                     if y1 != y2 and (y1 // 3 == y2 // 3):
-                        var1 = variables[x1 * dim + y1]
-                        var2 = variables[x2 * dim + y2]
+                        var1 = variables[y1 * dim + x1]
+                        var2 = variables[y2 * dim + x2]
                         constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
                         constraint.add_satisfying_tuples(sat_tuples)
                         constraints.append(constraint)
