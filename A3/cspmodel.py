@@ -59,7 +59,11 @@ def kropki_model(board):
     for c in dot_constraints:
         csp.add_constraint(c)
 
-    return csp, vars
+    vars_2d = [[0] * dim] * dim
+    for row in range(dim):
+        for col in range(dim):
+            vars_2d[row][col] = vars[row * dim + col]
+    return csp, vars_2d
 
 
 def create_initial_domain(dim):
