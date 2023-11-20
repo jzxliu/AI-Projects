@@ -212,17 +212,16 @@ def create_cage_constraints(dim, sat_tuples, variables):
     constraints = []
 
     if dim == 6:
-        for x1 in range(dim):
-            for x2 in range(x1, dim):
-                if x1 != x2:
-                    for y1 in range(dim):
-                        for y2 in range(y1, dim):
-                            if y1 != y2 and (x1 // 2 == x2 // 2) and (y1 // 3 == y2 // 3):
-                                var1 = variables[x1 * dim + y1]
-                                var2 = variables[x2 * dim + y2]
-                                constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
-                                constraint.add_satisfying_tuples(sat_tuples)
-                                constraints.append(constraint)
+        for x1 in [0, 2, 4]:
+            x2 = x1 + 1
+            for y1 in range(dim):
+                for y2 in range(dim):
+                    if y1 != y2 and (y1 // 3 == y2 // 3):
+                        var1 = variables[x1 * dim + y1]
+                        var2 = variables[x2 * dim + y2]
+                        constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
+                        constraint.add_satisfying_tuples(sat_tuples)
+                        constraints.append(constraint)
     if dim == 9:
         for x1 in range(dim):
             for y1 in range(dim):
