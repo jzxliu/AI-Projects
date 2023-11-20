@@ -51,6 +51,10 @@ def prop_FC(csp, last_assigned_var=None):
                     # Prune the value
                     unassigned.prune_value(value)
                     pruned.append((unassigned, value))
+                    if unassigned.cur_domain_size() == 0:
+                        # Undo assignment
+                        unassigned.unassign()
+                        return False, pruned
                 # Undo assignment
                 unassigned.unassign()
     return True, pruned
