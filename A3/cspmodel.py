@@ -47,11 +47,8 @@ def kropki_model(board):
     black_tuples = satisfying_tuples_black_dots(dim)
 
     diff_constraints = create_row_and_col_constraints(dim, diff_tuples, vars)
-    print(len(diff_constraints))
     cage_constraints = create_cage_constraints(dim, diff_tuples, vars)
-    print(len(cage_constraints))
     dot_constraints = create_dot_constraints(dim, board.dots, white_tuples, black_tuples, vars)
-    print(len(dot_constraints))
 
     for c in diff_constraints:
         csp.add_constraint(c)
@@ -62,10 +59,17 @@ def kropki_model(board):
     for c in dot_constraints:
         csp.add_constraint(c)
 
-    vars_2d = [[0] * dim] * dim
-    for row in range(dim):
-        for col in range(dim):
-            vars_2d[row][col] = vars[row * dim + col]
+    vars_2d = []
+    count = 0
+    row = []
+    for var in vars:
+        row.append(var)
+        count += 1
+        if count >= dim:
+            count = 0
+            vars_2d.append([v for v in row])
+            row = []
+
     return csp, vars_2d
 
 
@@ -224,12 +228,12 @@ def create_cage_constraints(dim, sat_tuples, variables):
                         constraints.append(constraint)
     if dim == 9:
         for x1 in range(dim):
-            for y1 in range(dim):
-                for x2 in range(dim):
+            for x2 in range(x1 + 1, dim):
+                for y1 in range(dim):
                     for y2 in range(dim):
-                        if (x1 // 3 == x2 // 3) and (y1 // 3 == y2 // 3):
-                            var1 = variables[x1 * dim + y1]
-                            var2 = variables[x2 * dim + y2]
+                        if x1 != x2 and y1 != y2 and (x1 // 3 == x2 // 3) and (y1 // 3 == y2 // 3):
+                            var1 = variables[y1 * dim + x1]
+                            var2 = variables[y2 * dim + x2]
                             constraint = Constraint("Cage " + str(var1) + ", " + str(var2), [var1, var2])
                             constraint.add_satisfying_tuples(sat_tuples)
                             constraints.append(constraint)
