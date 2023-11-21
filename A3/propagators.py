@@ -96,23 +96,27 @@ def prop_AC3(csp, last_assigned_var=None):
 
     while len(constraints) != 0:
         c = constraints.pop(0)
-        for x in c.get_scope():
+        scope = c.get_scope()
+        for var in scope:
             revised = False
-            for x_val in x.cur_domain():
+            for val in var.cur_domain():
                 works = False
-                for y in c.get_scope():
-                    if y != x:
-                        for y_val in y.cur_domain():
-                            if c.check((x_val, y_val)):
-                                works = True
+                if (var, val) in c.sup_tuples:
+                    for sup in c.sup_tuples[(var, val)]:
+                        sup_works = True
+                        for i, v in enumerate(sup):
+                            if v not in scope[i].cur_domain():
+                                sup_works = False
+                        if sup_works:
+                            works = True
                 if not works:
-                    x.prune_value(x_val)
-                    pruned.append((x, x_val))
+                    var.prune_value(val)
+                    pruned.append((var, val))
                     revised = True
-                    if x.cur_domain_size() == 0:
+                    if var.cur_domain_size() == 0:
                         return False, pruned
             if revised:
-                for new_c in csp.get_cons_with_var(x):
+                for new_c in csp.get_cons_with_var(var):
                     if new_c != c and new_c not in constraints:
                         constraints.append(new_c)
     return True, pruned
