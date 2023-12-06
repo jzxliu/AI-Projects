@@ -247,19 +247,19 @@ def ve(bayes_net, var_query, varlist_evidence):
 
     elimination_order = min_fill_ordering(factors, var_query)
     for var in elimination_order:
-        involved_factors = [factor for factor in factors if var in factor.get_scope()]
-        for f in involved_factors:
-            factors.remove(f)
-        product_factor = multiply(involved_factors)
-        summed_out_factor = sum_out(product_factor, var)
-        factors.append(summed_out_factor)
+        involved_factors = [f for f in factors if var in f.get_scope()]
+        product = multiply(involved_factors)
+        summed_out = sum_out(product, var)
+
+        # Update factors list: remove involved factors and add the summed-out factor
+        factors = [f for f in factors if f not in involved_factors]
+        factors.append(summed_out)
 
     final_factor = multiply(factors)
 
     normalized_factor = normalize(final_factor)
 
     return normalized_factor
-
 
 ## The order of these domains is consistent with the order of the columns in the data set.
 salary_variable_domains = {
