@@ -4,6 +4,7 @@
 ## v1.1
 ## - removed the example in ve since it is misleading.
 ############################################################
+import itertools
 
 from bnetbase import Variable, Factor, BN
 import csv
@@ -18,7 +19,11 @@ def normalize(factor):
     :return: a new Factor object resulting from normalizing factor.
     '''
 
-    ### YOUR CODE HERE ###
+    total = sum(factor.values)
+    normalized_factor = Factor(factor.name, factor.get_scope())
+    normalized_factor.values = [val/total for val in factor.values]
+
+    return normalized_factor
 
 
 def restrict(factor, variable, value):
@@ -31,9 +36,32 @@ def restrict(factor, variable, value):
     :param value: the value to restrict the variable to
     :return: a new Factor object resulting from restricting variable to value.
              This new factor no longer has variable in it.
-    ''' 
+    '''
+    # Initialize new scope, factor and values list
+    new_scope = [v for v in factor.get_scope() if v != variable]
+    new_factor = Factor(factor.name + " restricted", new_scope)
+    new_values = []
 
-    ### YOUR CODE HERE ###
+    for i in range(len(factor.values)):
+        assignment = []
+        temp = i
+        for v in reversed(factor.get_scope()):
+            assignment.insert(0, v.dom[temp % v.domain_size()])
+            temp = temp // v.domain_size()
+
+        # Check if the assignment matches the restricted variable's value
+        if assignment[factor.get_scope().index(variable)] == value:
+            # Compute the index for the new factor
+            new_index = 0
+            for v in new_scope:
+                new_index = new_index * v.domain_size() + v.value_index(assignment[factor.get_scope().index(v)])
+
+            # Add the value to the new factor's values
+            new_values.append(factor.values[i])
+
+    new_factor.values = new_values
+
+    return new_factor
 
 
 def sum_out(factor, variable):
