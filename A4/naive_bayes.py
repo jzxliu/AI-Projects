@@ -240,10 +240,10 @@ def ve(bayes_net, var_query, varlist_evidence):
 
     '''
     factors = bayes_net.factors()
-    for var, val in varlist_evidence.items():
-        for factor in factors:
-            if var in factor.get_scope():
-                factor = restrict(factor, var, val)
+    for var in varlist_evidence:
+        for i in range(len(factors)):
+            if var in factors[i].get_scope():
+                factors[i] = restrict(factors[i], var, var.get_evidence())
 
     elimination_order = min_fill_ordering(factors, var_query)
     for var in elimination_order:
