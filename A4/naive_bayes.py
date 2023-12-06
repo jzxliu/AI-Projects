@@ -239,7 +239,26 @@ def ve(bayes_net, var_query, varlist_evidence):
              the settings of the evidence variables.
 
     '''
-    ### YOUR CODE HERE ###
+    factors = bayes_net.factors()
+    for var, val in varlist_evidence.items():
+        for factor in factors:
+            if var in factor.get_scope():
+                factor = restrict(factor, var, val)
+
+    elimination_order = min_fill_ordering(factors, var_query)
+    for var in elimination_order:
+        involved_factors = [factor for factor in factors if var in factor.get_scope()]
+        for f in involved_factors:
+            factors.remove(f)
+        product_factor = multiply(involved_factors)
+        summed_out_factor = sum_out(product_factor, var)
+        factors.append(summed_out_factor)
+
+    final_factor = multiply(factors)
+
+    normalized_factor = normalize(final_factor)
+
+    return normalized_factor
 
 
 ## The order of these domains is consistent with the order of the columns in the data set.
