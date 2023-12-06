@@ -95,7 +95,7 @@ def sum_out(factor, variable):
         new_index = 0
         multiplier = 1
         for v in new_scope:
-            new_index += multiplier * assignment[factor.get_scope().index(v)]
+            new_index += multiplier * v.dom.index(assignment[factor.get_scope().index(v)])
             multiplier *= v.domain_size()
 
         new_values[new_index] += val
