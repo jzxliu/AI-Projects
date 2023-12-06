@@ -104,6 +104,7 @@ def sum_out(factor, variable):
 
     return summed_out_factor
 
+
 def multiply(factor_list):
     '''
     Multiply a list of factors together.
@@ -111,8 +112,47 @@ def multiply(factor_list):
 
     :param factor_list: a list of Factor objects.
     :return: a new Factor object resulting from multiplying all the factors in factor_list.
-    ''' 
-    ### YOUR CODE HERE ###
+    '''
+    new_scope_vars = set()
+    for factor in factor_list:
+        new_scope_vars.update(factor.get_scope())
+    new_scope = list(new_scope_vars)
+
+    # Step 2: Initialize the new factor
+    new_factor_name = "product of" + " ".join([f.name for f in factor_list])
+    product_factor = Factor(new_factor_name, new_scope)
+
+    # Calculate the size of the new factor's value table
+    new_factor_size = 1
+    for v in new_scope:
+        new_factor_size *= v.domain_size()
+
+    # Initialize the value table for the new factor
+    product_factor.values = [1] * new_factor_size
+
+    # Step 3: Calculate the values for the new factor
+    for idx in range(new_factor_size):
+        # Determine the assignment for this index
+        assignment = [None] * len(new_scope)
+        temp = idx
+        for i, v in enumerate(reversed(new_scope)):
+            assignment[len(new_scope) - 1 - i] = v.dom[temp % v.domain_size()]
+            temp //= v.domain_size()
+
+        # Multiply corresponding values from the input factors
+        for factor in factor_list:
+            # Generate index for the current factor
+            current_index = 0
+            multiplier = 1
+            for var in factor.get_scope():
+                value_index = var.dom.index(assignment[new_scope.index(var)])
+                current_index += multiplier * value_index
+                multiplier *= var.domain_size()
+
+            # Multiply the value
+            product_factor.values[idx] *= factor.values[current_index]
+
+    return product_factor
 
 
 def min_fill_ordering(factor_list, variable_query):
