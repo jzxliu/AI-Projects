@@ -118,7 +118,6 @@ def multiply(factor_list):
         new_scope_vars.update(factor.get_scope())
     new_scope = list(new_scope_vars)
 
-    # Step 2: Initialize the new factor
     new_factor_name = "product of" + " ".join([f.name for f in factor_list])
     product_factor = Factor(new_factor_name, new_scope)
 
@@ -185,7 +184,40 @@ def min_fill_ordering(factor_list, variable_query):
     before W in the list of factors provided.
     '''
 
-    ### YOUR CODE HERE ###
+    # Start with all variables except the query variable
+    remaining_vars = set()
+    for factor in factor_list:
+        for var in factor.get_scope():
+            if var != variable_query:
+                remaining_vars.add(var)
+
+    elimination_order = []
+
+    while remaining_vars:
+        min_size = float('inf')
+        best_var = None
+
+        for var in remaining_vars:
+            # Simulate eliminating the variable and calculate the size of the resulting factor
+            involved_factors = [f for f in factor_list if var in f.get_scope()]
+            new_scope = set()
+            for f in involved_factors:
+                new_scope.update(f.get_scope())
+            new_scope.discard(var)  # Remove the variable being eliminated
+            new_factor_size = 1
+            for v in new_scope:
+                new_factor_size *= v.domain_size()
+
+            # Check if this is the smallest factor so far
+            if new_factor_size < min_size:
+                min_size = new_factor_size
+                best_var = var
+
+        # Add the best variable to the elimination order and remove it from remaining variables
+        elimination_order.append(best_var)
+        remaining_vars.remove(best_var)
+
+    return elimination_order
 
 
 def ve(bayes_net, var_query, varlist_evidence): 
