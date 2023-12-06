@@ -74,11 +74,35 @@ def sum_out(factor, variable):
     :param variable: the variable to sum out.
     :return: a new Factor object resulting from summing out variable from the factor.
              This new factor no longer has variable in it.
-    '''       
+    '''
 
-    ### YOUR CODE HERE ###
+    new_scope = [v for v in factor.get_scope() if v != variable]
+    summed_out_factor = Factor(factor.name + " summed out" + variable.name, new_scope)
 
+    # Calculate the size of the new factor's value table
+    new_factor_size = 1
+    for v in new_scope:
+        new_factor_size *= v.domain_size()
+    new_values = [0] * new_factor_size
 
+    for idx, val in enumerate(factor.values):
+        assignment = [None] * len(factor.get_scope())
+        temp = idx
+        for i, v in enumerate(reversed(factor.get_scope())):
+            assignment[len(factor.get_scope()) - 1 - i] = v.dom[temp % v.domain_size()]
+            temp //= v.domain_size()
+
+        new_index = 0
+        multiplier = 1
+        for v in new_scope:
+            new_index += multiplier * assignment[factor.get_scope().index(v)]
+            multiplier *= v.domain_size()
+
+        new_values[new_index] += val
+
+    summed_out_factor.values = new_values
+
+    return summed_out_factor
 
 def multiply(factor_list):
     '''
