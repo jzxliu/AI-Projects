@@ -185,11 +185,11 @@ def min_fill_ordering(factor_list, variable_query):
     '''
 
     # Start with all variables except the query variable
-    remaining_vars = set()
+    remaining_vars = []
     for factor in factor_list:
         for var in factor.get_scope():
             if var != variable_query:
-                remaining_vars.add(var)
+                remaining_vars.append(var)
 
     elimination_order = []
 
